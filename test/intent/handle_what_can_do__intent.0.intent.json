@@ -1,0 +1,10 @@
+{
+    "expected_dialog": "what.i.can",
+    "intent": {
+        "Can": "can",
+        "Do": "do",
+        "What": "What"
+    },
+    "intent_type": "handle_what_can_do__intent",
+    "utterance": "What can you do?"
+}
