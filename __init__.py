@@ -49,22 +49,22 @@ class WhatCanYouDoSkill(MycroftSkill):
                    self.speak_dialog('no.skills')
         else:
             myskills = os.popen('ls /opt/mycroft/skills/').read()
-            myskills = myskills.replace(' ', ', ').replace('\r', ', ').replace('\t', '')
+            myskills = myskills.replace('\n', ', ').replace('\r', ', ').replace('\t', '')
             nr_skills = len(myskills.split())
             if nr_skills > 1:
-	        nr_skills = 'Here we go, you have %d skills installed.' % nr_skills
+                nr_skills = 'Here we go, you have %d skills installed.' % nr_skills
                 self.speak(nr_skills)
                 should_getskills = self.get_response('ask.getskills')
                 yes_words = set(self.translate_list('yes'))
                 if should_getskills:
                     resp_getskills = should_getskills.split()
                     if any(word in resp_getskills for word in yes_words):
-                      self.speak_dialog('my.skills')
-                      self.speak(myskills.strip())
+                        self.speak_dialog('my.skills')
+                        self.speak(myskills.strip())
                     else:
-                      self.speak_dialog('no.skills')
-                else:
-                    self.speak("I could not get a list of your installed skills, i am sorry.")
+                        self.speak_dialog('no.skills')
+            else:
+                self.speak("I could not get a list of your installed skills, i am sorry!")
 
 def create_skill():
     return WhatCanYouDoSkill()
