@@ -2,7 +2,7 @@
 Tells you what you can do
 
 ## Description 
-I tells you what you can do with Mycroft (some examples)
+It tells you what you can do with Mycroft (some examples)
 and lists the installed skills (if you want).
 
 Just a simple script but i missed it
