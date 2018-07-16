@@ -37,8 +37,7 @@ class WhatCanYouDoSkill(MycroftSkill):
         nr_skills = len(self.myskills.split()) # get number of skills
         if nr_skills < 1: # if msm did not give us what we want (no matter why) do alternative skill search
            self.myskills = os.popen('ls /opt/mycroft/skills/').read() # Get folders in /opt/mycroft/skills
-           self.myskills = self.myskills.replace('\n', ', ').replace('\r', ', ').replace('\t', '') # replace unwanted characters and make 
-nice list
+           self.myskills = self.myskills.replace('\n', ', ').replace('\r', ', ').replace('\t', '') # replace unwanted characters and make nice list
            nr_skills = len(self.myskills.split()) # get number of skills
         if nr_skills < 1: # if msm and alternative skill search fails than tell user that we couldn't do the job
            wait_while_speaking() # always wait
