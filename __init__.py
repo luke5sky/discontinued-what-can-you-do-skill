@@ -31,40 +31,41 @@ class WhatCanYouDoSkill(MycroftSkill):
     @intent_handler(IntentBuilder("").require("What").require("Can").require("Do"))
     def handle_what_can_do__intent(self, message):
         self.speak_dialog("what.i.can")
-        myskills = os.popen('msm list | grep installed').read()
-        myskills = myskills.replace('\n', ', ').replace('\r', ', ').replace('[installed],', ',').replace('\t', '')
-        nr_skills = len(myskills.split())
+        self.getSkills()
+
+    def getSkills(self):
+        self.myskills = os.popen('msm list | grep installed').read()
+        self.myskills = self.myskills.replace('\n', ', ').replace('\r', ', ').replace('[installed],', ',').replace('\t', '')
+        nr_skills = len(self.myskills.split())
+        if nr_skills < 1:
+           self.myskills = os.popen('ls /opt/mycroft/skills/').read()
+           self.myskills = self.myskills.replace('\n', ', ').replace('\r', ', ').replace('\t', '')
+           nr_skills = len(self.myskills.split())
+        if nr_skills < 1:
+           wait_while_speaking()
+           self.speak_dialog("not.found")
+           return
         wait_while_speaking()
-        if nr_skills > 1:
-            nr_skills = 'Here we go, you have %d skills installed.' % nr_skills
-            self.speak(nr_skills)
-            should_getskills = self.get_response('ask.getskills')
-            yes_words = set(self.translate_list('yes'))
-            if should_getskills:
-                resp_getskills = should_getskills.split()
-                if any(word in resp_getskills for word in yes_words):
-                   self.speak_dialog('my.skills')
-                   self.speak(myskills.strip())
-                else:
-                   self.speak_dialog('no.skills')
-        else:
-            myskills = os.popen('ls /opt/mycroft/skills/').read()
-            myskills = myskills.replace('\n', ', ').replace('\r', ', ').replace('\t', '')
-            nr_skills = len(myskills.split())
-            if nr_skills > 1:
-                nr_skills = 'Here we go, you have %d skills installed.' % nr_skills
-                self.speak(nr_skills)
-                should_getskills = self.get_response('ask.getskills')
-                yes_words = set(self.translate_list('yes'))
-                if should_getskills:
-                    resp_getskills = should_getskills.split()
-                    if any(word in resp_getskills for word in yes_words):
-                        self.speak_dialog('my.skills')
-                        self.speak(myskills.strip())
-                    else:
-                        self.speak_dialog('no.skills')
-            else:
-                self.speak("I could not get a list of your installed skills, i am sorry!")
+        self.speak_dialog('found', {'nrskills': nr_skills})
+        wait_while_speaking()
+        self.should_getskills = self.get_response('ask.getskills')
+        self.yes_words = set(self.translate_list('yes'))
+        self.listSkills()
+      
+    def listSkills(self):
+        if self.should_getskills:
+           resp_getskills = self.should_getskills.split()
+           if any(word in resp_getskills for word in self.yes_words):
+              self.speak_dialog('my.skills')
+              self.speak(self.myskills.strip())
+           else:
+              self.speak_dialog('no.skills')
+
+    def shutdown(self):
+        super(WhatCanYouDoSkill, self).shutdown()
+
+    def stop(self):
+        pass
 
 def create_skill():
     return WhatCanYouDoSkill()
