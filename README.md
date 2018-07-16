@@ -5,7 +5,6 @@ Tells you what you can do
 It tells you what you can do with Mycroft (some examples)
 and lists the installed skills (if you want).
 
-Just a simple script but i missed it
 
 ## Examples 
  - "What can you do?"
