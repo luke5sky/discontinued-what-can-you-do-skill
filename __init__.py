@@ -42,7 +42,7 @@ nice list
            nr_skills = len(self.myskills.split()) # get number of skills
         if nr_skills < 1: # if msm and alternative skill search fails than tell user that we couldn't do the job
            wait_while_speaking() # always wait
-           self.speak_dialog("not.found")
+           self.speak_dialog("not.found") # tell user that we couldn't do the job
            return # if all fails, return
         wait_while_speaking() # always wait
         self.speak_dialog('found', {'nrskills': nr_skills}) # we found skills -> yeah. tell user how many!
